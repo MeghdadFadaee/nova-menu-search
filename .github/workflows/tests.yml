@@ -1,0 +1,98 @@
+name: Tests
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  public-checks:
+    name: Public checks
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v4
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Validate Composer metadata
+        run: composer validate --strict
+
+      - name: Run JavaScript tests
+        run: npm test
+
+  nova-integration:
+    name: Nova integration
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v4
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Detect Nova credentials
+        id: nova
+        shell: bash
+        env:
+          NOVA_USERNAME: ${{ secrets.NOVA_USERNAME }}
+          NOVA_LICENSE_KEY: ${{ secrets.NOVA_LICENSE_KEY }}
+        run: |
+          if [[ -n "$NOVA_USERNAME" && -n "$NOVA_LICENSE_KEY" ]]; then
+            echo "available=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "available=false" >> "$GITHUB_OUTPUT"
+            echo "::notice::Nova integration checks require NOVA_USERNAME and NOVA_LICENSE_KEY repository secrets."
+          fi
+
+      - name: Configure Nova authentication
+        if: steps.nova.outputs.available == 'true'
+        env:
+          NOVA_USERNAME: ${{ secrets.NOVA_USERNAME }}
+          NOVA_LICENSE_KEY: ${{ secrets.NOVA_LICENSE_KEY }}
+        run: composer config http-basic.nova.laravel.com "$NOVA_USERNAME" "$NOVA_LICENSE_KEY"
+
+      - name: Install Composer dependencies
+        if: steps.nova.outputs.available == 'true'
+        run: composer install --no-interaction --prefer-dist --no-progress
+
+      - name: Install frontend dependencies
+        if: steps.nova.outputs.available == 'true'
+        run: npm install --no-audit --no-fund
+
+      - name: Run PHP tests
+        if: steps.nova.outputs.available == 'true'
+        run: composer test
+
+      - name: Check PHP formatting
+        if: steps.nova.outputs.available == 'true'
+        run: vendor/bin/pint --test
+
+      - name: Build production assets
+        if: steps.nova.outputs.available == 'true'
+        run: npm run production
+
+      - name: Verify committed assets
+        if: steps.nova.outputs.available == 'true'
+        run: git diff --exit-code -- dist

@@ -1,0 +1,124 @@
+.nova-menu-search {
+  margin-bottom: 1rem;
+}
+
+.nova-menu-search__field {
+  align-items: center;
+  border: 1px solid rgb(209 213 219);
+  border-radius: 0.5rem;
+  display: flex;
+  min-height: 2.5rem;
+  padding-inline: 0.625rem;
+  transition: border-color 120ms ease, box-shadow 120ms ease;
+}
+
+.nova-menu-search__field:focus-within {
+  border-color: rgb(var(--colors-primary-500, 59 130 246));
+  box-shadow: 0 0 0 3px rgb(var(--colors-primary-500, 59 130 246) / 0.18);
+}
+
+.nova-menu-search__icon {
+  color: rgb(107 114 128);
+  flex: none;
+  font-size: 1.25rem;
+  line-height: 1;
+}
+
+.nova-menu-search__input {
+  background: transparent;
+  border: 0;
+  color: inherit;
+  flex: 1;
+  font: inherit;
+  min-width: 0;
+  outline: none;
+  padding: 0.5rem;
+}
+
+.nova-menu-search__input::-webkit-search-cancel-button {
+  cursor: pointer;
+}
+
+.nova-menu-search__shortcut {
+  background: rgb(243 244 246);
+  border: 1px solid rgb(229 231 235);
+  border-radius: 0.25rem;
+  color: rgb(107 114 128);
+  flex: none;
+  font-family: inherit;
+  font-size: 0.6875rem;
+  line-height: 1;
+  padding: 0.25rem;
+}
+
+.nova-menu-search__results {
+  display: none;
+  margin-top: 0.5rem;
+}
+
+.nova-menu-search[data-active='true'] .nova-menu-search__results {
+  display: grid;
+  gap: 0.25rem;
+}
+
+.nova-menu-search[data-active='true'] + .sidebar-menu {
+  display: none;
+}
+
+.nova-menu-search__result {
+  border-radius: 0.375rem;
+  color: rgb(75 85 99);
+  display: flex;
+  flex-direction: column;
+  gap: 0.125rem;
+  padding: 0.5rem 0.625rem;
+  text-decoration: none;
+}
+
+.nova-menu-search__result:hover,
+.nova-menu-search__result:focus {
+  background: rgb(229 231 235);
+  outline: none;
+}
+
+.nova-menu-search__result-name {
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+.nova-menu-search__result-trail {
+  color: rgb(107 114 128);
+  font-size: 0.6875rem;
+}
+
+.nova-menu-search__empty {
+  color: rgb(107 114 128);
+  font-size: 0.8125rem;
+  margin: 0;
+  padding: 0.75rem 0.625rem;
+  text-align: center;
+}
+
+.dark .nova-menu-search__field {
+  border-color: rgb(75 85 99);
+}
+
+.dark .nova-menu-search__shortcut {
+  background: rgb(31 41 55);
+  border-color: rgb(75 85 99);
+  color: rgb(156 163 175);
+}
+
+.dark .nova-menu-search__result {
+  color: rgb(156 163 175);
+}
+
+.dark .nova-menu-search__result:hover,
+.dark .nova-menu-search__result:focus {
+  background: rgb(31 41 55);
+}
+
+.dark .nova-menu-search__result-trail,
+.dark .nova-menu-search__empty {
+  color: rgb(107 114 128);
+}

@@ -1,0 +1,13 @@
+{
+  "name": "nova-menu-search",
+  "private": true,
+  "scripts": {
+    "dev": "mix",
+    "watch": "mix watch",
+    "production": "mix --production",
+    "test": "node --test tests-js/*.test.js"
+  },
+  "devDependencies": {
+    "laravel-nova-devtool": "file:vendor/laravel/nova-devtool"
+  }
+}
