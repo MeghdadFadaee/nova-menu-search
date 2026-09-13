@@ -1,6 +1,7 @@
 import {
   collectSearchableItems,
   filterSearchableItems,
+  internalNavigationTarget,
 } from './search'
 
 Nova.booted((_app, store) => {
@@ -65,7 +66,7 @@ Nova.booted((_app, store) => {
           event.preventDefault()
           installation.input.value = ''
           renderResults(installation)
-          Nova.visit(item.path)
+          Nova.visit(internalNavigationTarget(item.path))
         })
       }
 

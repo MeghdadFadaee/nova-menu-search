@@ -4,6 +4,7 @@ import assert from 'node:assert/strict'
 import {
   collectSearchableItems,
   filterSearchableItems,
+  internalNavigationTarget,
   normalizeForSearch,
 } from '../resources/js/search.js'
 
@@ -66,4 +67,11 @@ test('deduplicates links and respects the configured result limit', () => {
     filterSearchableItems(items, 'user', 1).map(item => item.path),
     ['/resources/users']
   )
+})
+
+test('navigates to Nova menu URLs without prefixing the Nova base again', () => {
+  assert.deepEqual(internalNavigationTarget('/nova/resources/users'), {
+    url: '/nova/resources/users',
+    remote: false,
+  })
 })

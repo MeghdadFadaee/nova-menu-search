@@ -65,3 +65,7 @@ export function filterSearchableItems(items, query, maximumResults = 10) {
     })
     .slice(0, Math.max(1, Number(maximumResults) || 10))
 }
+
+export function internalNavigationTarget(path) {
+  return { url: path, remote: false }
+}
